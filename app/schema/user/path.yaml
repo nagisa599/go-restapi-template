@@ -1,0 +1,72 @@
+users:
+  get:
+    summary: ユーザー一覧情報取得
+    description: ユーザー一覧情報を取得する
+    tags:
+      - user
+    operationId: get-user-list
+    security: []
+    parameters:
+      - name: page
+        in: query
+        description: ページ番号
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: 1ページあたりの表示件数
+        required: false
+        schema:
+          type: integer
+          format: int32
+    responses:
+      "200":
+        description: ユーザー一覧情報を取得しました
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "./schema.yaml#/user"
+      "400":
+        $ref: "../components/error.yaml#/BadRequestResponse"
+      "403":
+        $ref: "../components/error.yaml#/ForbiddenResponse"
+      "404":
+        $ref: "../components/error.yaml#/NotFoundResponse"
+      "500":
+        $ref: "../components/error.yaml#/InternalServerErrorResponse"
+
+users_userId:
+  get:
+    summary: ユーザー情報取得
+    description: ユーザー情報を取得する
+    tags:
+      - user
+    operationId: get-user
+    security: []
+    parameters:
+      - name: userId
+        in: path
+        description: ユーザーID
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: ユーザー情報を取得しました
+        content:
+          application/json:
+            schema:
+              $ref: "./schema.yaml#/user"
+      "400":
+        $ref: "../components/error.yaml#/BadRequestResponse"
+      "403":
+        $ref: "../components/error.yaml#/ForbiddenResponse"
+      "404":
+        $ref: "../components/error.yaml#/NotFoundResponse"
+      "500":
+        $ref: "../components/error.yaml#/InternalServerErrorResponse"

@@ -1,39 +1,71 @@
-bad_request_error:
-  summary: Bad request
-  value: |-
-    {
-      "code": 400,
-      "message": "Bad request"
-    }
+error:
+  type: object
+  required:
+    - code
+    - message
+  properties:
+    code:
+      type: integer
+      format: int32
+    message:
+      type: string
 
-unauthorized_error:
-  summary: Unauthorized
-  value: |-
-    {
-      "code": 400,
-      "message": "UnAuthorized"
-    }
+BadRequestResponse:
+  description: リクエストエラー
+  content:
+    application/json:
+      schema:
+        $ref: "#/error"
+      examples:
+        bad_request:
+          value:
+            code: 400
+            message: "Bad request"
 
-forbidden_error:
-  summary: Forbidden
-  value: |-
-    {
-      "code": 403,
-      "message": "Forbidden"
-    }
+UnauthorizedResponse:
+  description: 認証エラー
+  content:
+    application/json:
+      schema:
+        $ref: "#/error"
+      examples:
+        unauthorized:
+          value:
+            code: 400
+            message: "Unauthorized"
 
-not_found_error:
-  summary: Not found
-  value: |-
-    {
-      "code": 404,
-      "message": "Not found"
-    }
+ForbiddenResponse:
+  description: アクセス権限エラー
+  content:
+    application/json:
+      schema:
+        $ref: "#/error"
+      examples:
+        forbidden:
+          value:
+            code: 403
+            message: "Forbidden"
 
-internal_server_error:
-  summary: Internal server error
-  value: |-
-    {
-      "code": 500,
-      "message": "Internal server error"
-    }
+NotFoundResponse:
+  description: リソースが見つかりません
+  content:
+    application/json:
+      schema:
+        $ref: "#/error"
+      examples:
+        not_found:
+          value:
+            code: 404
+            message: "Not found"
+
+InternalServerErrorResponse:
+  description: サーバーエラー
+  content:
+    application/json:
+      schema:
+        $ref: "#/error"
+      examples:
+        internal_server_error:
+          value:
+            code: 500
+            message: "Internal server error"

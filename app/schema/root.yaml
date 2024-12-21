@@ -1,0 +1,24 @@
+openapi: 3.0.0
+x-stoplight:
+  id: xxxxxxxx
+info:
+  title: open-api-spec
+  version: "1.0"
+tags:
+  - name: todo
+    description: todoに関するエンドポイント
+  - name: user
+    description: ユーザーに関するエンドポイント
+servers:
+  - url: "http://localhost:8080/v1"
+paths:
+  /users:
+    $ref: "./user/path.yaml#/users"
+  /users/{userId}:
+    $ref: "./user/path.yaml#/users_userId"
+components:
+  schemas:
+    user:
+      $ref: "./user/schema.yaml#/user"
+    error:
+      $ref: "./components/error.yaml#/error"
