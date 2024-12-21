@@ -3,14 +3,14 @@ x-stoplight:
   id: xxxxxxxx
 info:
   title: open-api-spec
-  version: "1.0"
+  version: '1.0'
 tags:
   - name: todo
     description: todoに関するエンドポイント
   - name: user
     description: ユーザーに関するエンドポイント
 servers:
-  - url: "http://localhost:8080/v1"
+  - url: 'http://localhost:8080/v1'
 paths:
   /users:
     get:
@@ -36,59 +36,23 @@ paths:
             type: integer
             format: int32
       responses:
-        "200":
+        '200':
           description: ユーザー一覧情報を取得しました
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/user"
-        "400":
-          description: リクエストエラー
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-              examples:
-                bad_request:
-                  value:
-                    code: 400
-                    message: Bad request
-        "403":
-          description: アクセス権限エラー
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-              examples:
-                forbidden:
-                  value:
-                    code: 403
-                    message: Forbidden
-        "404":
-          description: リソースが見つかりません
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-              examples:
-                not_found:
-                  value:
-                    code: 404
-                    message: Not found
-        "500":
-          description: サーバーエラー
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-              examples:
-                internal_server_error:
-                  value:
-                    code: 500
-                    message: Internal server error
-  "/users/{userId}":
+                  $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+  '/users/{userId}':
     get:
       summary: ユーザー情報取得
       description: ユーザー情報を取得する
@@ -105,20 +69,20 @@ paths:
             type: integer
             format: int64
       responses:
-        "200":
+        '200':
           description: ユーザー情報を取得しました
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/user"
-        "400":
-          $ref: "#/paths/~1users/get/responses/400"
-        "403":
-          $ref: "#/paths/~1users/get/responses/403"
-        "404":
-          $ref: "#/paths/~1users/get/responses/404"
-        "500":
-          $ref: "#/paths/~1users/get/responses/500"
+                $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
 components:
   schemas:
     user:
@@ -143,3 +107,59 @@ components:
           format: int32
         message:
           type: string
+  responses:
+    BadRequestResponse:
+      description: リクエストエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          examples:
+            bad_request:
+              value:
+                code: 400
+                message: Bad request
+    UnauthorizedResponse:
+      description: 認証エラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          examples:
+            unauthorized:
+              value:
+                code: 401
+                message: Unauthorized
+    ForbiddenResponse:
+      description: アクセス権限エラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          examples:
+            forbidden:
+              value:
+                code: 403
+                message: Forbidden
+    NotFoundResponse:
+      description: リソースが見つかりません
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          examples:
+            not_found:
+              value:
+                code: 404
+                message: Not found
+    InternalServerErrorResponse:
+      description: サーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          examples:
+            internal_server_error:
+              value:
+                code: 500
+                message: Internal server error

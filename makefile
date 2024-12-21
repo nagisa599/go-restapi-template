@@ -16,3 +16,6 @@ up-local:
 goBackend:
 	@echo "Starting go backend..."
 	docker exec -it  rest-api-backend bash
+
+gen-go:
+	docker exec -it rest-api-backend sh -c "cd app/gen && oapi-codegen --config config.yml ../../OpenAPI.yaml"
