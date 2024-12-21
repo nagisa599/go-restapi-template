@@ -29,15 +29,15 @@ users:
             schema:
               type: array
               items:
-                $ref: "./schema.yaml#/user"
+                $ref: "../root.yaml#/components/schemas/user"
       "400":
-        $ref: "../components/error.yaml#/BadRequestResponse"
+        $ref: "../root.yaml#/components/responses/BadRequestResponse"
       "403":
-        $ref: "../components/error.yaml#/ForbiddenResponse"
+        $ref: "../root.yaml#/components/responses/ForbiddenResponse"
       "404":
-        $ref: "../components/error.yaml#/NotFoundResponse"
+        $ref: "../root.yaml#/components/responses/NotFoundResponse"
       "500":
-        $ref: "../components/error.yaml#/InternalServerErrorResponse"
+        $ref: "../root.yaml#/components/responses/InternalServerErrorResponse"
 
 users_userId:
   get:
@@ -61,12 +61,12 @@ users_userId:
         content:
           application/json:
             schema:
-              $ref: "./schema.yaml#/user"
+              $ref: "../root.yaml#/components/schemas/user"
       "400":
-        $ref: "../components/error.yaml#/BadRequestResponse"
+        $ref: "../root.yaml#/components/responses/BadRequestResponse"
       "403":
-        $ref: "../components/error.yaml#/ForbiddenResponse"
+        $ref: "../root.yaml#/components/responses/ForbiddenResponse"
       "404":
-        $ref: "../components/error.yaml#/NotFoundResponse"
+        $ref: "../root.yaml#/components/responses/NotFoundResponse"
       "500":
-        $ref: "../components/error.yaml#/InternalServerErrorResponse"
+        $ref: "../root.yaml#/components/responses/InternalServerErrorResponse"

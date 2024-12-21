@@ -1,7 +1,0 @@
-success:
-  summary: Success
-  value: |-
-    {
-      "code": 200,
-      "message": ""
-    }

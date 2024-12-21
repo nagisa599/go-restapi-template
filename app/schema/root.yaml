@@ -9,6 +9,7 @@ tags:
     description: todoに関するエンドポイント
   - name: user
     description: ユーザーに関するエンドポイント
+
 servers:
   - url: "http://localhost:8080/v1"
 paths:
@@ -16,9 +17,22 @@ paths:
     $ref: "./user/path.yaml#/users"
   /users/{userId}:
     $ref: "./user/path.yaml#/users_userId"
+
 components:
   schemas:
     user:
       $ref: "./user/schema.yaml#/user"
     error:
-      $ref: "./components/error.yaml#/error"
+      $ref: "./components/schema/error.yaml#/error"
+
+  responses:
+    BadRequestResponse:
+      $ref: "./components/response/response.yaml#/BadRequestResponse"
+    UnauthorizedResponse:
+      $ref: "./components/response/response.yaml#/UnauthorizedResponse"
+    ForbiddenResponse:
+      $ref: "./components/response/response.yaml#/ForbiddenResponse"
+    NotFoundResponse:
+      $ref: "./components/response/response.yaml#/NotFoundResponse"
+    InternalServerErrorResponse:
+      $ref: "./components/response/response.yaml#/InternalServerErrorResponse"

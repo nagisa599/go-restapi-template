@@ -1,0 +1,145 @@
+openapi: 3.0.0
+x-stoplight:
+  id: xxxxxxxx
+info:
+  title: open-api-spec
+  version: "1.0"
+tags:
+  - name: todo
+    description: todoに関するエンドポイント
+  - name: user
+    description: ユーザーに関するエンドポイント
+servers:
+  - url: "http://localhost:8080/v1"
+paths:
+  /users:
+    get:
+      summary: ユーザー一覧情報取得
+      description: ユーザー一覧情報を取得する
+      tags:
+        - user
+      operationId: get-user-list
+      security: []
+      parameters:
+        - name: page
+          in: query
+          description: ページ番号
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: 1ページあたりの表示件数
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: ユーザー一覧情報を取得しました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/user"
+        "400":
+          description: リクエストエラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+              examples:
+                bad_request:
+                  value:
+                    code: 400
+                    message: Bad request
+        "403":
+          description: アクセス権限エラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+              examples:
+                forbidden:
+                  value:
+                    code: 403
+                    message: Forbidden
+        "404":
+          description: リソースが見つかりません
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+              examples:
+                not_found:
+                  value:
+                    code: 404
+                    message: Not found
+        "500":
+          description: サーバーエラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+              examples:
+                internal_server_error:
+                  value:
+                    code: 500
+                    message: Internal server error
+  "/users/{userId}":
+    get:
+      summary: ユーザー情報取得
+      description: ユーザー情報を取得する
+      tags:
+        - user
+      operationId: get-user
+      security: []
+      parameters:
+        - name: userId
+          in: path
+          description: ユーザーID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: ユーザー情報を取得しました
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        "400":
+          $ref: "#/paths/~1users/get/responses/400"
+        "403":
+          $ref: "#/paths/~1users/get/responses/403"
+        "404":
+          $ref: "#/paths/~1users/get/responses/404"
+        "500":
+          $ref: "#/paths/~1users/get/responses/500"
+components:
+  schemas:
+    user:
+      type: object
+      required:
+        - userId
+        - name
+      properties:
+        userId:
+          type: integer
+          format: int64
+        name:
+          type: string
+    error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
