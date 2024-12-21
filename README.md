@@ -1,5 +1,12 @@
 # go-restapi-template
 
+## 初期設定
+
+```bash
+# swagger-cliのインストール
+npm install -g swagger-cli
+```
+
 ## エラー設計
 
 | Error Type            | Code | Message               |

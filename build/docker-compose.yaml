@@ -18,7 +18,7 @@ services:
     container_name: rest-api-backend
     env_file:
       - .env
-    command: sh -c "sh ./build/init.sh"
+    # command: sh -c "sh ./build/init.sh"
     volumes:
       - ../:/go/src/
     depends_on:
