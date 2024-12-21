@@ -1,0 +1,39 @@
+bad_request_error:
+  summary: Bad request
+  value: |-
+    {
+      "code": 400,
+      "message": "Bad request"
+    }
+
+unauthorized_error:
+  summary: Unauthorized
+  value: |-
+    {
+      "code": 400,
+      "message": "UnAuthorized"
+    }
+
+forbidden_error:
+  summary: Forbidden
+  value: |-
+    {
+      "code": 403,
+      "message": "Forbidden"
+    }
+
+not_found_error:
+  summary: Not found
+  value: |-
+    {
+      "code": 404,
+      "message": "Not found"
+    }
+
+internal_server_error:
+  summary: Internal server error
+  value: |-
+    {
+      "code": 500,
+      "message": "Internal server error"
+    }
