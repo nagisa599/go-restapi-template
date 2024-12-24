@@ -1,0 +1,33 @@
+todos_userId:
+  get:
+    summary: todoリストの一覧を取得
+    description: todoリストの一覧を取得する
+    tags:
+      - todo
+    operationId: get-todos
+    security: []
+    parameters:
+      - name: userId
+        in: path
+        description: ユーザーID
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: ユーザー情報を取得しました
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../root.yaml#/components/schemas/todo"
+      "400":
+        $ref: "../root.yaml#/components/responses/BadRequestResponse"
+      "403":
+        $ref: "../root.yaml#/components/responses/ForbiddenResponse"
+      "404":
+        $ref: "../root.yaml#/components/responses/NotFoundResponse"
+      "500":
+        $ref: "../root.yaml#/components/responses/InternalServerErrorResponse"

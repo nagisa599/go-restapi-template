@@ -17,11 +17,15 @@ paths:
     $ref: "./user/path.yaml#/users"
   /users/{userId}:
     $ref: "./user/path.yaml#/users_userId"
+  /todos/{userId}:
+    $ref: "./todo/path.yaml#/todos_userId"
 
 components:
   schemas:
     user:
       $ref: "./user/schema.yaml#/user"
+    todo:
+      $ref: "./todo/schame.yaml#/todo"
     error:
       $ref: "./components/schema/error.yaml#/error"
 
