@@ -83,6 +83,39 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
+  '/todos/{userId}':
+    get:
+      summary: todoリストの一覧を取得
+      description: todoリストの一覧を取得する
+      tags:
+        - todo
+      operationId: get-todos
+      security: []
+      parameters:
+        - name: userId
+          in: path
+          description: ユーザーID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ユーザー情報を取得しました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/todo'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
 components:
   schemas:
     user:
@@ -95,6 +128,16 @@ components:
           type: integer
           format: int64
         name:
+          type: string
+    todo:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+        content:
           type: string
     error:
       type: object
