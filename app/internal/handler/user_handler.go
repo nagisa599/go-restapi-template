@@ -28,12 +28,10 @@ func NewUserHandler(uu usecase.IUserUsecase) IUserHandler {
 func (uh *userHandler) GetUserList(ctx echo.Context, params openapi.GetUserListParams ) error {
 	userRes :=
 		 []*openapi.User{
-			{
-				UserId: 1,
+			{	
 				Name: "user1",
 			},
 			{
-				UserId: 2,
 				Name: "user2",
 			},
 		}
