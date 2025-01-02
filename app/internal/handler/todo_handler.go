@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"fmt"
+
 	"github.com/labstack/echo/v4"
 	openapi "github.com/nasunagisa/restapi/app/gen"
 )
@@ -19,6 +21,7 @@ func NewTodoHandler() ITodoHandler {
 
 
 func (th *todoHandler) GetTodos(ctx echo.Context, userId int64) error {
+	fmt.Println("GetTodos2")
 	todoRes :=
 		[]*openapi.Todo{
 			{

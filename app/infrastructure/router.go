@@ -14,6 +14,7 @@ type serverImpl struct {
 }
 // Implement the ServerInterface methods
 func (s *serverImpl) GetTodos(ctx echo.Context, userId int64) error {
+	print("f")
     return s.th.GetTodos(ctx, userId)
 }
 
@@ -28,9 +29,9 @@ func (s *serverImpl) GetUser(ctx echo.Context, userId int64) error {
 func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler) *echo.Echo {
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000", os.Getenv("FE_URL")},
+		AllowOrigins: []string{"*", os.Getenv("FE_URL")},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept,
-			echo.HeaderAccessControlAllowHeaders, echo.HeaderXCSRFToken},
+			echo.HeaderAccessControlAllowHeaders},
 		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE"},
 		AllowCredentials: true,
 	}))
@@ -39,7 +40,7 @@ func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler) *echo.Echo {
 		th: th,
 	}
 	
-	openapi.RegisterHandlers(e, server)
+	openapi.RegisterHandlersWithBaseURL(e, server,"/v1")
 	return e
 }
 

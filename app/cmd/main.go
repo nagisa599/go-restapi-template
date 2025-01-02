@@ -11,5 +11,5 @@ func main() {
     todoHandler := handler.NewTodoHandler()
 
     e := router.NesRouter(userHandler, todoHandler)
-	e.Logger.Fatal(e.Start(":3001"))
+	e.Logger.Fatal(e.Start(":8080"))
 }
