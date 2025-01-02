@@ -1,7 +1,6 @@
 package infrastructure
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
@@ -11,11 +10,8 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type DatabaseHandler struct {
-  DB *gorm.DB
-}
 
-func NewDatabaseHandler() *DatabaseHandler {
+func NewDatabase() *gorm.DB {
 	 dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true&loc=Local&charset=utf8",
         os.Getenv("DB_USER"),
         os.Getenv("DB_PASSWORD"),
@@ -30,14 +26,13 @@ func NewDatabaseHandler() *DatabaseHandler {
 		db.Logger = db.Logger.LogMode(logger.Info)
 	} 
 
-	return &DatabaseHandler{DB: db}
-}
+	return db}
 
-func (h *DatabaseHandler) Close() {
-	sqlDB, _ := h.DB.DB()
-	sqlDB.Close()
-}
+// func (h *DatabaseHandler) Close() {
+// 	sqlDB, _ := h.DB.DB()
+// 	sqlDB.Close()
+// }
 
-func (h *DatabaseHandler) Conn(ctx context.Context) *gorm.DB {
-	return h.DB.WithContext(ctx)
-}
+// func (h *DatabaseHandler) Conn(ctx context.Context) *gorm.DB {
+// 	return h.DB.WithContext(ctx)
+// }

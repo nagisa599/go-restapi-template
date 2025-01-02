@@ -1,19 +1,27 @@
 package usecase
 
-import "github.com/nasunagisa/restapi/app/internal/domain"
+import (
+	"github.com/nasunagisa/restapi/app/internal/domain"
+	"github.com/nasunagisa/restapi/app/internal/domain/repository"
+)
 
 type IUserUsecase interface {
 	// todoリストの一覧を取得
 	GetUser(userId int64) (domain.User, error)
 }
-type userUsecase struct{}
+type userUsecase struct{
+	ur repository.IUserRepository
+}
 
-func NewUserUsecase() IUserUsecase {
-	return &userUsecase{}
+func NewUserUsecase(ur repository.IUserRepository) IUserUsecase {
+	return &userUsecase{ur}
 }
 
 func (tu *userUsecase) GetUser(userId int64) (domain.User, error) {
-	return domain.User{
-		Name: "user1",
-	}, nil
+	user := domain.User{}
+	err := tu.ur.GetUser(userId, &user)
+	if err != nil {
+		return domain.User{}, err
+	}
+	return user, nil
 }

@@ -1,17 +1,20 @@
 package main
 
 import (
-	router "github.com/nasunagisa/restapi/app/infrastructure"
+	"github.com/nasunagisa/restapi/app/infrastructure"
+	"github.com/nasunagisa/restapi/app/internal/domain/repository"
 	"github.com/nasunagisa/restapi/app/internal/handler"
 	"github.com/nasunagisa/restapi/app/internal/usecase"
 )
 
 func main() {
     // ハンドラ関数の定義
-    userUsecase := usecase.NewUserUsecase()
+    db := infrastructure.NewDatabase()
+    userRepository := repository.NewUserRepository(db)
+    userUsecase := usecase.NewUserUsecase(userRepository)
     userHandler := handler.NewUserHandler(userUsecase)
     todoHandler := handler.NewTodoHandler()
 
-    e := router.NesRouter(userHandler, todoHandler)
+    e := infrastructure.NesRouter(userHandler, todoHandler)
 	e.Logger.Fatal(e.Start(":8080"))
 }
