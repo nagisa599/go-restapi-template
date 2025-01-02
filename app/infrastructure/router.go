@@ -1,6 +1,7 @@
-package router
+package infrastructure
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/labstack/echo/v4"
@@ -14,7 +15,7 @@ type serverImpl struct {
 }
 // Implement the ServerInterface methods
 func (s *serverImpl) GetTodos(ctx echo.Context, userId int64) error {
-	print("f")
+	fmt.Println("ff")
     return s.th.GetTodos(ctx, userId)
 }
 
@@ -23,6 +24,7 @@ func (s *serverImpl) GetUserList(ctx echo.Context, params openapi.GetUserListPar
 }
 
 func (s *serverImpl) GetUser(ctx echo.Context, userId int64) error {
+	fmt.Println("ff")
     return s.uh.GetUser(ctx, userId)
 }
 
