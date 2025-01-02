@@ -1,19 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	router "github.com/nasunagisa/restapi/app/infrastructure"
+	"github.com/nasunagisa/restapi/app/internal/handler"
 )
 
 func main() {
     // ハンドラ関数の定義
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Hello, world!")
-    })
+    userHandler := handler.NewUserHandler()
+    todoHandler := handler.NewTodoHandler()
 
-    // サーバーをポート8080で起動
-    fmt.Println("Server is running on http://localhost:8080")
-    if err := http.ListenAndServe(":8080", nil); err != nil {
-        fmt.Println("Error starting server: ", err)
-    }
+    e := router.NesRouter(userHandler, todoHandler)
+	e.Logger.Fatal(e.Start(":3001"))
 }
