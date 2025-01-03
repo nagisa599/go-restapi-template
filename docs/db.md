@@ -1,4 +1,4 @@
-# データベース更新方法(goose を利用)
+# データベース更新方法(goose を利用)　(ローカル)
 
 > [!CAUTION]
 > からなず[.env.local](../build/.env.local)ファイル名を.env ファイル名に変更すること
@@ -29,3 +29,7 @@ root$ goose create ./add_table_worker sql
 ```bash
 goose mysql "${DB_USER}:${DB_PASSWORD}@tcp(${DB_HOST}:${DB_PORT})/${DB_NAME}" up
 ```
+
+# 本番環境 migration
+
+- ec2 インスタンスがある場合は、インスタンス内に入って実行すればいいが、ecs のように、インスタンスの中に入れない場合があるので、[dockerfile](../databases/Dockerfile)以下の image で migration をかける
