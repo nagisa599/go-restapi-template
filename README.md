@@ -7,7 +7,13 @@
 npm install -g swagger-cli
 ```
 
-#
+## テスト設計
+
+- repository のテスト
+- usecase のテスト
+- handler のテスト
+
+## e2e テスト
 
 ## エラー設計
 
