@@ -27,7 +27,6 @@ func (ur *userRepository) GetUser(userId int64, user *domain.User) error {
 	if err := ur.db.Table("user").Where("id = ?", userId).First(dbUser).Error; err != nil {
 		return err
 	}
-	print(dbUser.Username)
 	user.Name = dbUser.Username
 	return nil
 }
