@@ -37,14 +37,11 @@ func TestGetUser(t *testing.T) {
 		mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `user` WHERE id = ? ORDER BY `user`.`id` LIMIT ?")).
 		WithArgs(userId,1).  // id と LIMIT の値として 1 を期待
 		WillReturnRows(rows)
-
-
 		user := &domain.User{}
 		// 実行のエラーが出ないこと
 		err = repo.GetUser(userId, user)
 		assert.NoError(t, err, "Error was not expected while fetching user")
 		assert.Equal(t, expectedUsername, user.Name, "Expected username does not match actual username")
-		
 		assert.NoError(t, mock.ExpectationsWereMet(), "There were unfulfilled expectations")
 	})
 
