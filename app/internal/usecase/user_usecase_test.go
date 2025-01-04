@@ -22,17 +22,17 @@ func TestUsecaseGetUser(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		userId := int64(1)
 		user := domain.User{}
-		expectedUser := domain.User{ Name: "testuser"}
-
 		mockRepo.EXPECT().GetUser(userId, &user).DoAndReturn(
-			func(id int64, user *domain.User) error {
-				user.Name = "testuser"
-				return nil
+			func(id int64, u *domain.User) error {
+			u.Name = "testuser"  // user を u に変更して、引数から直接参照する
+			return nil
 			},
 		)
-		_ , err := userUsecase.GetUser(userId)
-		assert.NoError(t, err)
-		assert.Equal(t, expectedUser, user)
+
+		resultUser , err := userUsecase.GetUser(userId)
+		expectedUser := domain.User{ Name: "testuser"}
+		assert.NoError(t, err,"呼び出しエラー")
+		assert.Equal(t, expectedUser, resultUser,"返り値エラー")
 	})
 
 	// t.Run("UserNotFound", func(t *testing.T) {
