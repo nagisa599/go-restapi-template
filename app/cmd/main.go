@@ -12,9 +12,11 @@ func main() {
     db := infrastructure.NewDatabase()
     userRepository := repository.NewUserRepository(db)
     userUsecase := usecase.NewUserUsecase(userRepository)
+    
     userHandler := handler.NewUserHandler(userUsecase)
     todoHandler := handler.NewTodoHandler()
+    errorHandler := handler.NewErrorHandler()
 
-    e := infrastructure.NesRouter(userHandler, todoHandler)
+    e := infrastructure.NesRouter(userHandler, todoHandler, errorHandler)
 	e.Logger.Fatal(e.Start(":8080"))
 }

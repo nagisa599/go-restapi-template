@@ -51,3 +51,11 @@ make install
 | Forbidden             | 403  | Forbidden             |
 | Not Found             | 404  | Not found             |
 | Internal Server Error | 500  | Internal server error |
+
+## 参考記事
+
+https://qiita.com/unsoluble_sugar/items/b080a16701946fcfce70
+
+## エラーハンドリング
+
+- usecase でエラーを投げられない
