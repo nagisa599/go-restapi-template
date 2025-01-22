@@ -28,7 +28,7 @@ func (s *serverImpl) GetUser(ctx echo.Context, userId int64) error {
     return s.uh.GetUser(ctx, userId)
 }
 
-func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler,eh handler.IErrorHandler) *echo.Echo {
+func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler) *echo.Echo {
 	// echoのインスタンスを生成
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -43,8 +43,6 @@ func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler,eh handler.IError
 		th: th,
 	}
 
-	e.HTTPErrorHandler = eh.CustomHTTPErrorHandler
-	
 	openapi.RegisterHandlersWithBaseURL(e, server,"/v1")
 	return e
 }

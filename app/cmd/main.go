@@ -15,8 +15,8 @@ func main() {
     
     userHandler := handler.NewUserHandler(userUsecase)
     todoHandler := handler.NewTodoHandler()
-    errorHandler := handler.NewErrorHandler()
+   
 
-    e := infrastructure.NesRouter(userHandler, todoHandler, errorHandler)
+    e := infrastructure.NesRouter(userHandler, todoHandler)
 	e.Logger.Fatal(e.Start(":8080"))
 }

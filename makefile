@@ -30,6 +30,7 @@ install:
 
 
 mock-gen:
-	$(GOBIN)/mockgen -source=./app/internal/domain/repository/user_repository.go -destination=./app/mock/repository_mock/user_mock.go -package=repository_mock
+	$(GOBIN)/mockgen -source=./app/internal/domain/repository/user_repository.go -destination=./app/mock/repository_mock/mock.go -package=repository_mock
+$(GOBIN)/mockgen -source=./app/internal/domain/repository/user_repository.go -destination=./app/mock/repository_mock/mock.go -package=repository_mock
 	$(GOBIN)/mockgen -source=./app/internal/usecase/user_usecase.go -destination=./app/mock/usecase_mock/user_mock.go -package=usecase_mock
 
