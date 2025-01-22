@@ -14,7 +14,7 @@ jobs:
         uses: actions/setup-go@v5
         id: setup-go
         with:
-          go-version-file: "./go.mod"
+          go-version-file: "./app/go.mod"
 
       - name: Install dependencies
         if: ${{ steps.setup-go.outputs.cache-hit != 'true' }}
@@ -24,13 +24,13 @@ jobs:
 
       - name: Test
         run: |
-          mkdir tmp/coverage
+          mkdir -p /tmp/coverage/
           cd ./app
           go test -v -coverprofile=/tmp/coverage/gotest.out ./internal/...
 
       - name: Exclude auto-generated files from coverage
         run: |
-          cat /tmp/coverage/gotest.out | grep -v "internal" | grep -v "app/graphql/*.go" > /tmp/coverage/coverage.out
+          cat /tmp/coverage/gotest.out  > /tmp/coverage/coverage.out
           cd ./app
           go tool cover -html=/tmp/coverage/coverage.out -o /tmp/coverage/coverage.html
 
