@@ -5,10 +5,10 @@ package usecase
 import (
 	"testing"
 
-	"github.com/golang/mock/gomock"
 	"github.com/nasunagisa/restapi/app/internal/domain"
 	"github.com/nasunagisa/restapi/app/mock/repository_mock"
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/mock/gomock"
 )
 
 
