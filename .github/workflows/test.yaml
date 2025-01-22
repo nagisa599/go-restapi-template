@@ -24,7 +24,7 @@ jobs:
 
       - name: Test
         run: |
-          mkdir -p /tmp/coverage/
+          mkdir test/coverage
           cd ./app
           go test -v -coverprofile=/tmp/coverage/gotest.out ./internal/...
 
