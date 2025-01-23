@@ -11,14 +11,9 @@ import (
 )
 
 
-func NewDatabase() *gorm.DB {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true&loc=Local&charset=utf8",
-        os.Getenv("DB_USER"),
-        os.Getenv("DB_PASSWORD"),
-        os.Getenv("DB_HOST"),
-        os.Getenv("DB_PORT"),
-        os.Getenv("DB_NAME"))
-
+func NewTestDatabase() *gorm.DB {
+	dsn := "root:@tcp(localhost:3307)/mysql_template?parseTime=true&loc=Local&charset=utf8"
+	fmt.Print(dsn)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	fmt.Print(dsn)
 	if err != nil {
