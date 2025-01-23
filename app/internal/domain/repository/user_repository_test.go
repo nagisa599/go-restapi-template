@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"regexp"
 	"testing"
 
@@ -45,6 +46,24 @@ func TestGetUser(t *testing.T) {
 		assert.NoError(t, mock.ExpectationsWereMet(), "There were unfulfilled expectations")
 	})
 
+	t.Run("異常系: ユーザーが見つからない2", func(t *testing.T) {
+		userId := int64(1)  // 存在しないユーザーID
+		expectedError := gorm.ErrRecordNotFound
+
+		// Queryが呼ばれた際にErrRecordNotFoundを返すように設定
+		mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `user` WHERE id = ? ORDER BY `user`.`id` LIMIT ?")).
+			WithArgs(userId, 1).
+			WillReturnError(expectedError)
+
+		user := &domain.User{}
+		err := repo.GetUser(userId, user)
+
+		// エラーが期待通りに発生するか検証
+		assert.Error(t, err, "Expected an error when user is not found")
+		assert.True(t, errors.Is(err, expectedError), "Expected a 'record not found' error")
+		assert.NoError(t, mock.ExpectationsWereMet(), "There were unfulfilled expectations")
+	})
+
 	// t.Run("GetUser_NotFound", func(t *testing.T) {
 	// 	userId := int64(2)
 
@@ -67,25 +86,4 @@ func TestGetUser(t *testing.T) {
 	// 	}
 	// })
 
-	// t.Run("GetUser_DBError", func(t *testing.T) {
-	// 	userId := int64(3)
-
-	// 	mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "user" WHERE id = ? ORDER BY "user"."id" LIMIT 1`)).
-	// 		WithArgs(userId).
-	// 		WillReturnError(gorm.ErrInvalidDB)
-
-	// 	user := &domain.User{}
-	// 	err = repo.GetUser(userId, user)
-	// 	if err == nil {
-	// 		t.Errorf("expected error but got none")
-	// 	}
-
-	// 	if err != gorm.ErrInvalidDB {
-	// 		t.Errorf("expected error to be %s, but got %s", gorm.ErrInvalidDB, err)
-	// 	}
-
-	// 	if err := mock.ExpectationsWereMet(); err != nil {
-	// 		t.Errorf("there were unfulfilled expectations: %s", err)
-	// 	}
-	// })
 }

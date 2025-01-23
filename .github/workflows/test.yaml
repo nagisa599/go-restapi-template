@@ -1,0 +1,41 @@
+name: Golang Unit Test
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Golang
+        uses: actions/setup-go@v5
+        id: setup-go
+        with:
+          go-version-file: "./go.mod"
+
+      - name: Install dependencies
+        if: ${{ steps.setup-go.outputs.cache-hit != 'true' }}
+        run: |
+          cd ./app
+          go mod download
+
+      - name: Test
+        run: |
+          mkdir -p /tmp/coverage/
+          cd ./app
+          go test -v -coverprofile=/tmp/coverage/gotest.out ./internal/...
+
+      - name: Exclude auto-generated files from coverage
+        run: |
+          cat /tmp/coverage/gotest.out  > /tmp/coverage/coverage.out
+          cd ./app
+          go tool cover -html=/tmp/coverage/coverage.out -o /tmp/coverage/coverage.html
+
+      - name: Upload Go test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Coverage
+          path: /tmp/coverage/coverage.html
