@@ -28,7 +28,8 @@ func NewDatabase() *gorm.DB {
 		db.Logger = db.Logger.LogMode(logger.Info)
 	} 
 
-	return db}
+	return db
+}
 
 // func (h *DatabaseHandler) Close() {
 // 	sqlDB, _ := h.DB.DB()

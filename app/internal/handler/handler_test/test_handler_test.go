@@ -11,6 +11,7 @@ import (
 
 func TestGetUser(t *testing.T) {
 	// ハンドラ関数の定義
+
 	userHandler := test.InitTest()	
 	e := echo.New()
 
