@@ -7,17 +7,32 @@ on:
 jobs:
   test:
     runs-on: ubuntu-22.04
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ""
+          MYSQL_DATABASE: "mysql_template"
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          TZ: "Asia/Tokyo"
+        ports:
+          - 3307:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root --password=''" 
+          --health-interval=10s 
+          --health-timeout=10s 
+          --health-retries=5
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Golang
         uses: actions/setup-go@v5
-        id: setup-go
         with:
           go-version-file: "./go.mod"
 
       - name: Install dependencies
-        if: ${{ steps.setup-go.outputs.cache-hit != 'true' }}
         run: |
           cd ./app
           go mod download
@@ -26,11 +41,17 @@ jobs:
         run: |
           mkdir -p /tmp/coverage/
           cd ./app
+          # Set environment variables for database connection
+          export DB_USER='root'
+          export DB_PASSWORD=''
+          export DB_HOST='localhost'
+          export DB_PORT=3307
+          export DB_NAME='mysql_template'
           go test -v -coverprofile=/tmp/coverage/gotest.out ./internal/...
 
       - name: Exclude auto-generated files from coverage
         run: |
-          cat /tmp/coverage/gotest.out  > /tmp/coverage/coverage.out
+          cat /tmp/coverage/gotest.out > /tmp/coverage/coverage.out
           cd ./app
           go tool cover -html=/tmp/coverage/coverage.out -o /tmp/coverage/coverage.html
 
