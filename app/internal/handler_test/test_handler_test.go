@@ -1,18 +1,15 @@
-package test_handler
+package handler_test
 
 import (
 	"net/http/httptest"
 	"testing"
 
 	"github.com/labstack/echo/v4"
-	"github.com/nasunagisa/restapi/app/test"
 	"github.com/sebdah/goldie/v2"
 )
 
 func TestGetUser(t *testing.T) {
 	// ハンドラ関数の定義
-
-	userHandler := test.InitTest()	
 	e := echo.New()
 
 	g:=goldie.New(
@@ -29,7 +26,7 @@ func TestGetUser(t *testing.T) {
 		{
 			name: "正常系",
 			in: 1,
-		
+
 		
 		},
 	}

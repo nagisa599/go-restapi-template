@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS user (
+CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL
 );
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS todo (
     user_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     content TEXT,
-    FOREIGN KEY (user_id) REFERENCES user(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 -- +goose StatementEnd
 
@@ -22,5 +22,5 @@ DROP TABLE IF EXISTS todo;
 -- +goose StatementEnd
 
 -- +goose StatementBegin
-DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS users;
 -- +goose StatementEnd
