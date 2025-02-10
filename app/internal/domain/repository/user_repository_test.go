@@ -35,7 +35,7 @@ func TestGetUser(t *testing.T) {
 		expectedUsername := "testuser"
 		rows := sqlmock.NewRows([]string{"id", "username"}).AddRow(userId, expectedUsername)
 			
-		mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `user` WHERE id = ? ORDER BY `user`.`id` LIMIT ?")).
+		mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `users` WHERE id = ? ORDER BY `user`.`id` LIMIT ?")).
 		WithArgs(userId,1).  // id と LIMIT の値として 1 を期待
 		WillReturnRows(rows)
 		user := &domain.User{}
@@ -51,7 +51,7 @@ func TestGetUser(t *testing.T) {
 		expectedError := gorm.ErrRecordNotFound
 
 		// Queryが呼ばれた際にErrRecordNotFoundを返すように設定
-		mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `user` WHERE id = ? ORDER BY `user`.`id` LIMIT ?")).
+		mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `users` WHERE id = ? ORDER BY `user`.`id` LIMIT ?")).
 			WithArgs(userId, 1).
 			WillReturnError(expectedError)
 
