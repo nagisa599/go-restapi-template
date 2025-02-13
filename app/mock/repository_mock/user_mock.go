@@ -53,3 +53,17 @@ func (mr *MockIUserRepositoryMockRecorder) GetUser(userId, user any) *gomock.Cal
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUser", reflect.TypeOf((*MockIUserRepository)(nil).GetUser), userId, user)
 }
+
+// GetUserList mocks base method.
+func (m *MockIUserRepository) GetUserList(users *[]domain.User) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserList", users)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GetUserList indicates an expected call of GetUserList.
+func (mr *MockIUserRepositoryMockRecorder) GetUserList(users any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserList", reflect.TypeOf((*MockIUserRepository)(nil).GetUserList), users)
+}
