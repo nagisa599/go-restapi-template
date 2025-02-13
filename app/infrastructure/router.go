@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	openapi "github.com/nasunagisa/restapi/app/gen"
 	"github.com/nasunagisa/restapi/app/internal/handler"
+	customMiddleware "github.com/nasunagisa/restapi/app/middleware"
 )
 type serverImpl struct {
     uh handler.IUserHandler
@@ -37,7 +38,7 @@ func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler) *echo.Echo {
 			echo.HeaderAccessControlAllowHeaders},
 		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE"},
 		AllowCredentials: true,
-	}),middleware.Logger())
+	}),customMiddleware.NewApplicationLog().Log())
 	server := &serverImpl{
 		uh: uh,
 		th: th,
