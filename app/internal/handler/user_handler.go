@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/labstack/echo/v4"
 	openapi "github.com/nasunagisa/restapi/app/gen"
@@ -43,10 +42,10 @@ func (uh *userHandler) GetUserList(ctx echo.Context, params openapi.GetUserListP
 func (uh *userHandler) GetUser(ctx echo.Context, userId int64) error {
 	user, err := uh.uu.GetUser(userId)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err)
+		return err
 	}
 	userRes := &openapi.User{
-		Name: user.Name,
+		Name: user.Name, 
 	}
 
 	fmt.Println(userRes)

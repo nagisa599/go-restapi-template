@@ -6,13 +6,16 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 type ApplicationLog struct {
+    LogFile *os.File
 }
 type bodyDumpResponseWriter struct {
     io.Writer
@@ -20,7 +23,13 @@ type bodyDumpResponseWriter struct {
 }
 
 func NewApplicationLog() *ApplicationLog {
-	return &ApplicationLog{}
+    file, err := os.OpenFile("application.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening file: %v", err)
+	}
+	return &ApplicationLog{
+		LogFile: file,
+	}
 }
 
 func (al *ApplicationLog) Log() echo.MiddlewareFunc {
