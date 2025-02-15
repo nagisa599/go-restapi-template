@@ -34,3 +34,7 @@ func NewInternalServerError() *MyError {
 func NewForbiddenError() *MyError {
 	return New(403, "Forbidden")
 }
+
+func NewNotFoundError() *MyError {
+  return New(404, "Not Found")
+}

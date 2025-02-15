@@ -1,17 +1,13 @@
 package infrastructure
 
 import (
-	"fmt"
-	"net/http"
 	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	openapi "github.com/nasunagisa/restapi/app/gen"
-	"github.com/nasunagisa/restapi/app/internal/domain"
 	"github.com/nasunagisa/restapi/app/internal/handler"
 	customMiddleware "github.com/nasunagisa/restapi/app/middleware"
-	"go.uber.org/zap"
 )
 type serverImpl struct {
     uh handler.IUserHandler
@@ -34,7 +30,7 @@ func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler) *echo.Echo {
 	// echoのインスタンスを生成
 	e := echo.New()
 
-	e.HTTPErrorHandler = CustomHTTPErrorHandler
+	e.HTTPErrorHandler = customMiddleware.CustomHTTPErrorHandler
 	
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*", os.Getenv("FE_URL")},
@@ -42,7 +38,12 @@ func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler) *echo.Echo {
 			echo.HeaderAccessControlAllowHeaders},
 		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE"},
 		AllowCredentials: true,
-	}),customMiddleware.NewApplicationLog().Log())
+	}))
+	// ローカル環境でのみカスタムミドルウェアを適用
+	if os.Getenv("ENV") == "development" {
+		e.Use(customMiddleware.NewApplicationLog().Log())
+	}
+	// ルーティング
 	server := &serverImpl{
 		uh: uh,
 		th: th,
@@ -53,22 +54,3 @@ func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler) *echo.Echo {
 }
 
 
-
-func CustomHTTPErrorHandler(err error, c echo.Context) {
-	fmt.Println("CustomHTTPErrorHandler")
-	logger, _ := zap.NewProduction()
-	if me, ok := err.(*domain.MyError); ok {
-		// カスタムエラーの場合
-		logger.Error(me.Msg, zap.String("stack", me.StackTrace))
-		c.JSON(me.Code, echo.Map{
-			"code":    me.Code,
-			"message": me.Msg,
-		})
-	} else {
-		// その他のエラーの場合、InternalServerErrorを返す
-		logger.Error("対応されてないエラー")
-		c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "Internal Server Error",
-		})
-	}
-}
