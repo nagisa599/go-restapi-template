@@ -36,3 +36,10 @@ mock-gen-example:
 
 mock-first:
 	gomockhandler -config=gomockhandler.json string
+
+
+
+
+
+mock-check:
+	gomockhandler check

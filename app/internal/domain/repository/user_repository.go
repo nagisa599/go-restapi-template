@@ -17,6 +17,7 @@ func (DbUser) TableName() string {
 
 type IUserRepository interface {
 	GetUser(userId int64, user *domain.User) error
+	GetUserList(users *[]domain.User) error
 }
 
 type userRepository struct{
@@ -34,5 +35,16 @@ func (ur *userRepository) GetUser(userId int64, user *domain.User) error {
 		return err
 	}
 	user.Name = dbUser.Username
+	return nil
+}
+
+func (ur *userRepository) GetUserList(users *[]domain.User) error {
+	dbUsers := []DbUser{}
+	if err := ur.db.Table("users").Find(&dbUsers).Error; err != nil {
+		return err
+	}
+	for _, dbUser := range dbUsers {
+		*users = append(*users, domain.User{Name: dbUser.Username})
+	}
 	return nil
 }

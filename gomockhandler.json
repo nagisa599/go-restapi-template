@@ -1,8 +1,8 @@
 {
 	"mocks": {
 		"app/mock/repository_mock/user_mock.go": {
-			"checksum": "4acv7EFf7EaYb3QZL+sQcg==",
-			"source_checksum": "MB7Q5bRlKf4PNF0GcJxc1Q==",
+			"checksum": "kCSbUSJ8oIfwfZDKZ71KvA==",
+			"source_checksum": "9HSqcwk4A6gqkx02LVhs4A==",
 			"mode": "SOURCE_MODE",
 			"source_mode_runner": {
 				"source": "app/internal/domain/repository/user_repository.go",

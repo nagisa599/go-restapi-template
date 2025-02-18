@@ -63,27 +63,64 @@ func TestGetUser(t *testing.T) {
 		assert.True(t, errors.Is(err, expectedError), "Expected a 'record not found' error")
 		assert.NoError(t, mock.ExpectationsWereMet(), "There were unfulfilled expectations")
 	})
+}
+func TestGetUserList(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+	}
+	defer db.Close()
+	mock.ExpectQuery("SELECT VERSION()").WillReturnRows(sqlmock.NewRows([]string{"version"}).AddRow("5.7.32"))
 
-	// t.Run("GetUser_NotFound", func(t *testing.T) {
-	// 	userId := int64(2)
+	gormDB, err := gorm.Open(mysql.New(mysql.Config{
+		Conn: db,
+	}), &gorm.Config{})
+	if err != nil {
+		t.Fatalf("an error '%s' was not expected when initializing gorm", err)
+	}
 
-	// 	mock.ExpectQuery(regexp.QuoteMeta(`SELECT * FROM "user" WHERE id = ? ORDER BY "user"."id" LIMIT 1`)).
-	// 		WithArgs(userId).
-	// 		WillReturnError(gorm.ErrRecordNotFound)
 
-	// 	user := &domain.User{}
-	// 	err = repo.GetUser(userId, user)
-	// 	if err == nil {
-	// 		t.Errorf("expected error but got none")
-	// 	}
+	repo := NewUserRepository(gormDB)
 
-	// 	if err != gorm.ErrRecordNotFound {
-	// 		t.Errorf("expected error to be %s, but got %s", gorm.ErrRecordNotFound, err)
-	// 	}
+	t.Run("正常系", func(t *testing.T) {
+		// テストデータを入れる
+		expectedUsers := []domain.User{
+			{
+				Name: "testuser1",
+			},
+			{
+				Name: "testuser2",
+			},
+		}
+		rows := sqlmock.NewRows([]string{"id", "username"}).
+			AddRow(1, expectedUsers[0].Name).
+			AddRow(2, expectedUsers[1].Name)
 
-	// 	if err := mock.ExpectationsWereMet(); err != nil {
-	// 		t.Errorf("there were unfulfilled expectations: %s", err)
-	// 	}
-	// })
+		mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `users`")).
+			WillReturnRows(rows)
+			
+		users := []domain.User{}
+		// 実行のエラーが出ないこと
+		err = repo.GetUserList(&users)
+		assert.NoError(t, err, "Error was not expected while fetching user list")
+		assert.Equal(t, expectedUsers, users, "Expected user list does not match actual user list")
+		assert.NoError(t, mock.ExpectationsWereMet(), "There were unfulfilled expectations")
+	})
+	t.Run("異常系: ユーザーが見つからない", func(t *testing.T) {
+		expectedError := gorm.ErrRecordNotFound
+
+		// Queryが呼ばれた際にErrRecordNotFoundを返すように設定
+		mock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `users`")).
+			WillReturnError(expectedError)
+
+		users := []domain.User{}
+		err := repo.GetUserList(&users)
+
+		// エラーが期待通りに発生するか検証
+		assert.Error(t, err, "Expected an error when user list is not found")
+		assert.True(t, errors.Is(err, expectedError), "Expected a 'record not found' error")
+		assert.NoError(t, mock.ExpectationsWereMet(), "There were unfulfilled expectations")
+	})
 
 }
+		// エラーが期待通りに発生するか検証
