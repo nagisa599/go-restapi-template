@@ -27,7 +27,6 @@ func NewDatabase() *gorm.DB {
 	if os.Getenv("ENV") == "development" {
 		db.Logger = db.Logger.LogMode(logger.Info)
 	} 
-
 	return db
 }
 
