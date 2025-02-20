@@ -1,4 +1,4 @@
-package domain
+package Error
 
 import (
 	"fmt"
@@ -7,34 +7,34 @@ import (
 )
 
 
-type MyError struct {
+type CustomerError struct {
   Code       int
   Msg        string
   StackTrace string
 }
 
 // Error error interfaceを実装
-func (me *MyError) Error() string {
+func (me *CustomerError) Error() string {
   return fmt.Sprintf("my error: code[%d], message[%s]", me.Code, me.Msg)
 }
 
 // New コンストラクタ
-func New(code int, msg string) *MyError {
+func New(code int, msg string) *CustomerError {
   stack := zap.Stack("").String
-  return &MyError{
+  return &CustomerError{
     Code:       code,
     Msg:        msg,
     StackTrace: stack,
   }
 }
-func NewInternalServerError() *MyError {
+func NewInternalServerError() *CustomerError {
 	return New(500, "Internal Server Error")
 }
 
-func NewForbiddenError() *MyError {
+func NewForbiddenError() *CustomerError {
 	return New(403, "Forbidden")
 }
 
-func NewNotFoundError() *MyError {
+func NewNotFoundError() *CustomerError {
   return New(404, "Not Found")
 }

@@ -6,16 +6,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 type ApplicationLog struct {
-    LogFile *os.File
 }
 type bodyDumpResponseWriter struct {
     io.Writer
@@ -23,13 +20,7 @@ type bodyDumpResponseWriter struct {
 }
 
 func NewApplicationLog() *ApplicationLog {
-    file, err := os.OpenFile("application.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("error opening file: %v", err)
-	}
-	return &ApplicationLog{
-		LogFile: file,
-	}
+    return &ApplicationLog{}
 }
 
 func (al *ApplicationLog) Log() echo.MiddlewareFunc {
@@ -55,8 +46,10 @@ func (al *ApplicationLog) Log() echo.MiddlewareFunc {
             mw := io.MultiWriter(c.Response().Writer, resBody)
             writer := &bodyDumpResponseWriter{Writer: mw, ResponseWriter: c.Response().Writer}
             c.Response().Writer = writer
+        
         },
         LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+            fmt.Print(c.Response())
             fmt.Printf("request: %s %s, request body: %v, response status: %d, response body: %v",
                 v.Method, v.URIPath, string(reqBody), v.Status, resBody.String(),
             )

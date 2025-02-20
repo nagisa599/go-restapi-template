@@ -43,6 +43,7 @@ func NesRouter(uh handler.IUserHandler,th handler.ITodoHandler) *echo.Echo {
 	if os.Getenv("ENV") == "development" {
 		e.Use(customMiddleware.NewApplicationLog().Log())
 	}
+
 	// ルーティング
 	server := &serverImpl{
 		uh: uh,

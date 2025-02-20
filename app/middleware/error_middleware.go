@@ -4,15 +4,15 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/nasunagisa/restapi/app/internal/domain"
+	"github.com/nasunagisa/restapi/app/config/Error"
 	"go.uber.org/zap"
 )
 
 func CustomHTTPErrorHandler(err error, c echo.Context) {
 	logger, _ := zap.NewProduction()
-	if me, ok := err.(*domain.MyError); ok {
+	if me, ok := err.(*Error.CustomerError); ok {
 		// カスタムエラーの場合
-		logger.Error(me.Msg, zap.String("stack", me.StackTrace))
+	 	logger.Error(me.Msg, zap.String("stack", me.StackTrace))
 		c.JSON(me.Code, echo.Map{
 			"code":    me.Code,
 			"message": me.Msg,

@@ -21,7 +21,7 @@ func (tu *userUsecase) GetUser(userId int64) (domain.User, error) {
 	user := domain.User{}
 	err := tu.ur.GetUser(userId, &user)
 	if err != nil {
-		return domain.User{}, domain.NewForbiddenError()
+		return domain.User{}, err
 	}
 	return user, nil
 }
