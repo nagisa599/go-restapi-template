@@ -1,4 +1,4 @@
-ROOT_FILE = app/schema/root.yaml
+ROOT_FILE = schema/root.yaml
 OPENAPI_FILE = OpenAPI.yaml
 export GOBIN := $(PWD)/bin
 
