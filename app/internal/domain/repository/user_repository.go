@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/nasunagisa/restapi/app/config/Error"
 	"github.com/nasunagisa/restapi/app/internal/domain"
 	"gorm.io/gorm"
 )
@@ -32,7 +33,7 @@ func (ur *userRepository) GetUser(userId int64, user *domain.User) error {
 
 	dbUser := &DbUser{}
 	if err := ur.db.Table("users").Where("id = ?", userId).First(dbUser).Error; err != nil {
-		return err
+		return Error.NewNotFoundError()
 	}
 	user.Name = dbUser.Username
 	return nil

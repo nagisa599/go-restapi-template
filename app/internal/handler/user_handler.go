@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/labstack/echo/v4"
-	"github.com/nasunagisa/restapi/app/config/Error"
 	openapi "github.com/nasunagisa/restapi/app/gen"
 	"github.com/nasunagisa/restapi/app/internal/usecase"
 )
@@ -36,14 +35,13 @@ func (uh *userHandler) GetUserList(ctx echo.Context, params openapi.GetUserListP
 				Name: "user2",
 			},
 		}
-
 	return ctx.JSON(200, userRes)
 }
 
 func (uh *userHandler) GetUser(ctx echo.Context, userId int64) error {
 	user, err := uh.uu.GetUser(userId)
 	if err != nil {
-		return Error.NewForbiddenError()
+		return err
 	}
 	userRes := &openapi.User{
 		Name: user.Name, 
