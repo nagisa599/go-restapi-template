@@ -1,5 +1,7 @@
 # go-restapi-template
 
+これは golang-echo の restapi のテンプレートです
+
 ## 初期設定
 
 ```bash
