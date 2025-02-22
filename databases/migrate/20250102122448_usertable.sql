@@ -1,26 +1,21 @@
 -- +goose Up
--- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL
-);
--- +goose StatementEnd
 
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS todo (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    content TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+CREATE TABLE tasks (
+    task_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    description TEXT,
+    priority INT,
+    status ENUM('未完了', '進行中', '完了'),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE IF EXISTS todo;
+DROP TABLE IF EXISTS tasks;
 -- +goose StatementEnd
 
--- +goose StatementBegin
-DROP TABLE IF EXISTS users;
--- +goose StatementEnd
+
